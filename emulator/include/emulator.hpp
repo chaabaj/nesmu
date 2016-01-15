@@ -9,19 +9,19 @@
 
 namespace nesmu
 {
-    class Emulator
+    class emulator
     {
     public:
 
-        Emulator();
+        emulator();
 
         void start(std::string const &file);
 
         void stop();
 
     private:
-        std::array<char, MEM_SIZE>  _memory;
-        CPU                         _cpu;
+        std::array<uint8_t, MEM_SIZE>  _memory;
+        Cpu _cpu;
     };
 }
 
