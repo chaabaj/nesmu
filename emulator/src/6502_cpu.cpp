@@ -35,14 +35,17 @@ namespace nesmu
         }
         else
         {
-            std::cout << "Unrecognized opcode " << static_cast<int16_t>(opcode) << " stop executing" << std::endl;
+            _registers.pc += 1;
         }
     }
 
     void Cpu::set_zero_and_neg_flags(uint8_t val)
     {
+        std::cout << "Set zero and neg flags : " << static_cast<int16_t>(val) << std::endl;
         _registers.p = val == 0 ? _registers.p | 0b00000010 : _registers.p;
+
         _registers.p = static_cast<int8_t>(val) < 0 ? _registers.p | 0b10000000 : _registers.p;
+        std::cout << std::bitset<8>(_registers.p) << std::endl;
     }
 
     uint8_t Cpu::sei(core::Rom &rom)
