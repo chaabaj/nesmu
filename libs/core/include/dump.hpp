@@ -9,7 +9,14 @@
 
 namespace nesmu
 {
-    void dump(std::vector<char> const &bytes);
+    template<typename Container>
+    void dump(Container const &bytes)
+    {
+        for (char byte : bytes)
+        {
+            std::cout << std::hex << std::uppercase << static_cast<int16_t>(byte) << " ";
+        }
+    }
 }
 
 #endif //NESMU_DUMP_HPP

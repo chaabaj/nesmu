@@ -16,10 +16,10 @@ namespace nesmu
         class RomReader
         {
         public:
-            typedef std::shared_ptr<Rom>    RomPtrType;
+            typedef nesmu::core::Rom::SPtr RomSPtrType;
 
             ///Read a nes rom (support only NES 2.0 rom format
-            static RomPtrType read(std::string const &filePath);
+            static RomSPtrType read(std::string const &filePath);
         };
     }
 }

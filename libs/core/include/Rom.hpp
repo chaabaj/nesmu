@@ -6,44 +6,53 @@
 # define NESMU_ROM_HPP
 
 # include <vector>
+# include "types.hpp"
+# include "utils.hpp"
 
 namespace nesmu
 {
-
-            // Each prg page is 16384 bytes(prg is for program code)
-            // Each chr page is 8192 bytes(chr is for graphics data
-    struct RomInfo
+    namespace core
     {
-        char magic[4];
-        uint8_t nbPrgPages;
-        uint8_t nbChrPages;
-        uint8_t flag6;
-        uint8_t flag7;
+        // Each prg page is 16384 bytes(prg is for program code)
+        // Each chr page is 8192 bytes(chr is for graphics data
+        struct RomInfo
+        {
+            char magic[4];
+            uint8_t nbPrgPages;
+            uint8_t nbChrPages;
+            uint8_t flag6;
+            uint8_t flag7;
 
-        static const int8_t NES_MAGIC[4];
-    };
+            static constexpr int8_t NES_MAGIC[4] = {'N', 'E', 'S', 0};
+        };
 
-    class Rom
-    {
-    public:
-        typedef std::vector<char>   ByteContainer;
+        class Rom
+        {
+        public:
 
-        Rom(RomInfo const &info,
-            ByteContainer &&prg,
-            ByteContainer &&chr);
+            NESMU_SMART_POINTERS(Rom);
 
-        ~Rom() {}
-        ByteContainer const &getPrg() const;
-        ByteContainer const &getChr() const;
+            Rom(RomInfo const &info,
+                ByteVector &&prg,
+                ByteVector &&chr);
+
+            ~Rom() {}
+            ByteVector const &getPrg() const;
+            ByteVector const &getChr() const;
+            RomInfo const &getInfo() const;
+
+            ByteVector::const_iterator getBank(uint8_t bank) const;
 
 
-        static const uint16_t   PRG_PAGE_SIZE = 16384;
-        static const uint16_t   CHR_PAGE_SIZE = 8192;
-    private:
-        RomInfo               _info;
-        ByteContainer const   _prg;
-        ByteContainer const   _chr;
-    };
+            static const uint16_t   PRG_PAGE_SIZE = 16384;
+            static const uint16_t   CHR_PAGE_SIZE = 8192;
+        private:
+            RomInfo            _info;
+            ByteVector const   _prg;
+            ByteVector const   _chr;
+        };
+    }
+
 }
 
 
