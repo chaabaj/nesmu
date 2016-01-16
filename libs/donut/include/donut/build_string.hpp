@@ -9,10 +9,12 @@
 
 namespace donut
 {
-    template<typename ... T>
-    std::string _str(std::stringstream &stream, T const & ... params)
+    template<typename T>
+    std::string _str(std::stringstream &stream, T const &param)
     {
-        return _str(stream, params...);
+        stream << param;
+
+        return stream.str();
     }
 
     template<typename T, typename ... U>
@@ -21,14 +23,6 @@ namespace donut
         stream << param;
 
         return _str(stream, params...);
-    }
-
-    template<typename T>
-    std::string _str(std::stringstream &stream, T const &param)
-    {
-        stream << param;
-
-        return stream.str();
     }
 
     template<typename ... T>
