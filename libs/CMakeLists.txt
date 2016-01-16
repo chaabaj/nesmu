@@ -3,3 +3,4 @@ project(nesmu_libs)
 
 add_subdirectory(core)
 add_subdirectory(reader)
+add_subdirectory(donut)

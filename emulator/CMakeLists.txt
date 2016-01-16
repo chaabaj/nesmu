@@ -11,10 +11,10 @@ endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../bin)
 
-include_directories(include ../libs/reader/include ../libs/core/include)
+include_directories(include ../libs/reader/include ../libs/core/include ../libs/donut/include)
 
 add_executable(emulator ${SRCS} ${HEADERS})
 
 install(TARGETS emulator DESTINATION ../bin)
 
-target_link_libraries (emulator nesmu_reader nesmu_core ${CMAKE_DL_LIBS})
+target_link_libraries (emulator nesmu_reader donut nesmu_core ${CMAKE_DL_LIBS})

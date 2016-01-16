@@ -9,7 +9,7 @@
 # include <array>
 # include <vector>
 # include <bitset>
-# include "Rom.hpp"
+# include "rom.hpp"
 # include "constants.hpp"
 
 namespace nesmu

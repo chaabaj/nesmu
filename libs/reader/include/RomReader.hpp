@@ -7,7 +7,7 @@
 
 # include <string>
 # include <memory>
-# include "Rom.hpp"
+# include "rom.hpp"
 
 namespace nesmu
 {

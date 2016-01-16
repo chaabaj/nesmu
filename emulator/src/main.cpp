@@ -5,6 +5,7 @@
 #include "emulator.hpp"
 #include "RomReader.hpp"
 #include "dump.hpp"
+#include "donut.hpp"
 
 int main(int ac, char **av)
 {
@@ -12,6 +13,7 @@ int main(int ac, char **av)
     {
         nesmu::emulator emulator;
 
+        donut::flags::DEBUG = true;
         emulator.start(std::string(av[1]));
     }
     else

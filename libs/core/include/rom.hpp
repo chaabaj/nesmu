@@ -5,9 +5,10 @@
 #ifndef NESMU_ROM_HPP
 # define NESMU_ROM_HPP
 
+# include <cstdint>
 # include <vector>
+# include "macro.hpp"
 # include "types.hpp"
-# include "utils.hpp"
 
 namespace nesmu
 {

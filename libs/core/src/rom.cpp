@@ -2,7 +2,7 @@
 // Created by Chaabane on 1/12/16.
 //
 
-#include "Rom.hpp"
+#include "rom.hpp"
 
 namespace nesmu
 {
@@ -12,17 +12,17 @@ namespace nesmu
         {
         }
 
-        const ByteVector & Rom::getChr() const
+        const ByteVector &Rom::getChr() const
         {
             return _chr;
         }
 
-        const ByteVector & Rom::getPrg() const
+        const ByteVector &Rom::getPrg() const
         {
             return _prg;
         }
 
-        RomInfo const& Rom::getInfo() const
+        RomInfo const&Rom::getInfo() const
         {
             return _info;
         }

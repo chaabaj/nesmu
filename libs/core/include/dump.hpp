@@ -9,12 +9,15 @@
 
 namespace nesmu
 {
-    template<typename Container>
-    void dump(Container const &bytes)
+    namespace core
     {
-        for (char byte : bytes)
+        template<typename Container>
+        void dump(Container const &bytes)
         {
-            std::cout << std::hex << std::uppercase << static_cast<int16_t>(byte) << " ";
+            for (char byte : bytes)
+            {
+                std::cout << std::hex << std::uppercase << static_cast<int16_t>(byte) << " ";
+            }
         }
     }
 }

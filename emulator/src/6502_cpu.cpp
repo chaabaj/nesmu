@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <cstring>
+#include "donut.hpp"
 #include "6502_cpu.hpp"
 
 namespace nesmu
@@ -30,7 +32,7 @@ namespace nesmu
         {
             op_code_handler_t handler = _handlers[opcode];
 
-            std::cout << "Executing opcode : " << std::hex << std::uppercase << static_cast<int16_t>(opcode) << std::endl;
+            DONUT_PRINT_DEBUG("CPU", std::hex, std::uppercase, "Executing opcode : ", static_cast<int16_t>(opcode));
             _registers.pc += (this->*handler)(rom);
         }
         else
@@ -41,10 +43,10 @@ namespace nesmu
 
     void Cpu::set_zero_and_neg_flags(uint8_t val)
     {
-        std::cout << "Set zero and neg flags : " << static_cast<int16_t>(val) << std::endl;
+        DONUT_PRINT_DEBUG("CPU", std::hex, "Set zero and neg flags", std::uppercase, static_cast<int16_t>(val));
         _registers.p = val == 0 ? _registers.p | 0b00000010 : _registers.p;
-
         _registers.p = static_cast<int8_t>(val) < 0 ? _registers.p | 0b10000000 : _registers.p;
+
         std::cout << std::bitset<8>(_registers.p) << std::endl;
     }
 
@@ -65,7 +67,7 @@ namespace nesmu
         uint8_t nb = _memory[_registers.pc + 1];
 
         _registers.a = nb;
-        std::cout << "Loaded number a : " << static_cast<int16_t>(_registers.a) << std::endl;
+        DONUT_PRINT_DEBUG("CPU", std::hex, "Loaded number a : ", static_cast<int16_t>(_registers.a));
         this->set_zero_and_neg_flags(_registers.a);
         return 2;
     }
@@ -75,7 +77,7 @@ namespace nesmu
         uint16_t addr = (_memory[_registers.pc + 2] << 8) + (_memory[_registers.pc + 1]);
 
         _memory[addr] = _registers.a;
-        std::cout << "Memory at addr " << addr << " value is : " << static_cast<int16_t>(_memory[addr]) << std::endl;
+        DONUT_PRINT_DEBUG("CPU", std::hex, "Memory at addr : ", addr, static_cast<int16_t>(_memory[addr]));
         return 3;
     }
 
@@ -84,7 +86,7 @@ namespace nesmu
         uint8_t val = _memory[_registers.pc + 1];
 
         _registers.x = val;
-        std::cout << "Loaded direct value " << static_cast<int16_t>(val) << " in register x" << std::endl;
+        DONUT_PRINT_DEBUG("CPU", std::hex, "Loaded direct value : ", static_cast<int16_t>(val), "in register x");
         this->set_zero_and_neg_flags(_registers.x);
         return 2;
     }
@@ -92,8 +94,8 @@ namespace nesmu
     uint8_t Cpu::txs(core::Rom &rom)
     {
         _registers.sp = _registers.x;
-        std::cout << "Transfert the value in register x : " <<  std::hex << static_cast<int16_t>(_registers.x)
-          << " to the register sp" << std::endl;
+        DONUT_PRINT_DEBUG("CPU", std::hex, "Transfert the value in register x : ", static_cast<int16_t>(_registers.x),
+                          " to the register sp")
         return 1;
     }
 
@@ -101,6 +103,7 @@ namespace nesmu
     {
         uint16_t addr = (_memory[_registers.pc + 2] << 8) + (_memory[_registers.pc + 1]);
 
+        DONUT_PRINT_DEBUG("CPU", std::hex, "Load value in memory at address ", addr, " to register a");
         _registers.a = _memory[addr];
         this->set_zero_and_neg_flags(_registers.a);
         return 3;
@@ -115,7 +118,7 @@ namespace nesmu
         {
             int8_t addr = static_cast<int8_t>(_memory[_registers.pc + 1]);
 
-            std::cout << "Relative jump at relative addr : " << std::dec << static_cast<int16_t>(addr) << std::endl;
+            DONUT_PRINT_DEBUG("CPU", std::dec, "Relative jump at relative addr ", static_cast<int16_t>(addr));
             // relative jump if negative flag in register p is zero
             _registers.pc += addr;
         }
