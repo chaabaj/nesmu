@@ -6,11 +6,8 @@
 # define NESMU_6302_CPU_HPP
 
 # include <cstdint>
-# include <array>
-# include <vector>
-# include <bitset>
+# include "memory.hpp"
 # include "rom.hpp"
-# include "constants.hpp"
 
 namespace nesmu
 {
@@ -31,9 +28,11 @@ namespace nesmu
 
         // memory is shared between component write in s
         // some address will affect other device such as ppu for exameple
-        Cpu(std::array<uint8_t, MEM_SIZE> &memory);
+        Cpu(Memory &memory);
 
+        void init();
         void play(core::Rom &rom);
+        void reset();
 
         static const int NB_OPCODE = 255;
 

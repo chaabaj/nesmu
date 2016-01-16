@@ -6,6 +6,8 @@
 # define NESMU_EMULATOR_HPP
 
 # include "6502_cpu.hpp"
+# include "memory.hpp"
+# include "ppu.hpp"
 
 namespace nesmu
 {
@@ -20,8 +22,9 @@ namespace nesmu
         void stop();
 
     private:
-        std::array<uint8_t, MEM_SIZE>  _memory;
-        Cpu _cpu;
+        Memory  _memory;
+        Cpu     _cpu;
+        PPU     _ppu;
     };
 }
 

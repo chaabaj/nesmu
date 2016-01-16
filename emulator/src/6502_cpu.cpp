@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <bitset>
 #include "donut.hpp"
 #include "6502_cpu.hpp"
 
@@ -11,7 +12,6 @@ namespace nesmu
 {
     Cpu::Cpu(std::array<uint8_t, MEM_SIZE> &memory) : _memory(memory)
     {
-        std::memset(&_registers, 0, sizeof(_registers));
         _registers.pc = 0x8000;
         std::memset(_handlers, 0, sizeof(_handlers));
         _handlers[0x78] = &Cpu::sei;
@@ -22,6 +22,32 @@ namespace nesmu
         _handlers[0x9A] = &Cpu::txs;
         _handlers[0xAD] = &Cpu::lda_ind_val;
         _handlers[0x10] = &Cpu::bpl;
+    }
+
+    // init the cpu see http://wiki.nesdev.com/w/index.php/CPU_power_up_state
+    void Cpu::init()
+    {
+        donut::Console::log("CPU") << "initialize the cpu" << std::endl;
+        std::memset(&_registers, 0, sizeof(_registers));
+        _registers.p = 0x34;
+        _registers.sp = 0xFD;
+        _memory[0x4017] = 0; // frame irq enabled
+        _memory[0x4015] = 0; // all channels disabled
+        for (int i = 0x4000; i < 0x400F; ++i)
+        {
+            _memory[i] = 0;
+        }
+        donut::Console::log("CPU") << "CPU initialized" << std::endl;
+    }
+
+    // init the cpu see http://wiki.nesdev.com/w/index.php/CPU_power_up_state
+    void Cpu::reset()
+    {
+        donut::Console::log("CPU") << "initialize the ppu" << std::endl;
+        _registers.sp -= 3;
+        _registers.p |= 0b0000100;
+        _memory[0x4015] = 0;
+        donut::Console::log("PPU") << "PPU initialized" << std::endl;
     }
 
     void Cpu::play(core::Rom &rom)
@@ -44,8 +70,8 @@ namespace nesmu
     void Cpu::set_zero_and_neg_flags(uint8_t val)
     {
         DONUT_PRINT_DEBUG("CPU", std::hex, "Set zero and neg flags", std::uppercase, static_cast<int16_t>(val));
-        _registers.p = val == 0 ? _registers.p | 0b00000010 : _registers.p;
-        _registers.p = static_cast<int8_t>(val) < 0 ? _registers.p | 0b10000000 : _registers.p;
+        _registers.p = val == 0 ? _registers.p | 0b00000010 : _registers.p & 0b11111101;
+        _registers.p = static_cast<int8_t>(val) < 0 ? _registers.p | 0b10000000 : _registers.p & 0b01111111;
 
         std::cout << std::bitset<8>(_registers.p) << std::endl;
     }
@@ -121,7 +147,8 @@ namespace nesmu
             DONUT_PRINT_DEBUG("CPU", std::dec, "Relative jump at relative addr ", static_cast<int16_t>(addr));
             // relative jump if negative flag in register p is zero
             _registers.pc += addr;
+            return 0;
         }
-        return 0;
+        return 1;
     }
 }
