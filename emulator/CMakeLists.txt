@@ -5,13 +5,15 @@ project(emulator)
 file(GLOB_RECURSE SRCS "src/*.cpp")
 file(GLOB_RECURSE HEADERS "include/*.hpp" "include/*.tpp")
 
-if (UNIX OR APPLE)
+if (UNIX OR APPLE OR CYGWIN)
     set(CMAKE_CXX_FLAGS "-std=c++11 -ggdb -Wall")
 endif()
 
+add_definitions("-std=c++11 -Wall -ggdb")
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../bin)
 
-include_directories(include ../libs/reader/include ../libs/core/include ../libs/donut/include)
+include_directories(include ../reader/include ../core/include ../donut/include)
 
 add_executable(emulator ${SRCS} ${HEADERS})
 
