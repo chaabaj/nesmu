@@ -13,10 +13,20 @@ add_definitions("-std=c++11 -Wall -ggdb")
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ../../bin)
 
-include_directories(include ../reader/include ../core/include ../donut/include)
+include_directories(include
+        ../reader/include
+        ../core/include
+        ../donut/include
+        ../6502/include
+)
 
 add_executable(emulator ${SRCS} ${HEADERS})
 
 install(TARGETS emulator DESTINATION ../bin)
 
-target_link_libraries (emulator nesmu_reader donut nesmu_core ${CMAKE_DL_LIBS})
+target_link_libraries (emulator
+        nesmu_reader
+        donut
+        nesmu_core
+        spi_6502
+)

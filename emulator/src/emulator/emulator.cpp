@@ -25,11 +25,10 @@ namespace nesmu
         std::copy(rom->getBank(2), rom->getBank(2) + core::Rom::PRG_PAGE_SIZE, _memory.begin() + 0xC000);
         donut::Console::log("NESMU") << "First program bank is loaded in memory from address 0 to PRG PAGE SIZE" << std::endl;
 
-        _cpu.init();
         _ppu.init();
         while (true)
         {
-            _cpu.play(*rom);
+            _cpu.play();
             _ppu.play(*rom);
         }
     }
